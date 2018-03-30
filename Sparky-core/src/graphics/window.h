@@ -25,6 +25,7 @@ namespace sparky { namespace graphics {
 
 		private:
 			bool init();
+
 		};
 	}
 }
