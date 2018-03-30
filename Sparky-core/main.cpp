@@ -1,16 +1,18 @@
-#include <GLFW\glfw3.h>
-#include <iostream>
+#include "src/graphics/window.h"
 
 int main()
 {
-	if (!glfwInit())
+	using namespace sparky;
+	using namespace graphics;
+
+	Window window("Sparky window", 1280, 720);
+	glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
+
+	while (!window.closed())
 	{
-		std::cout << "Error!" << std::endl;
+		window.clear();
+		window.update();
 	}
-	else
-	{
-		std::cout << "Success!" << std::endl;
-	}
-	std::cin.get();
+
 	return 0;
 }
