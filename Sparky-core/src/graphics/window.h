@@ -1,7 +1,12 @@
 #pragma once
 
+#ifndef GLEW_STATIC
+#	define GLEW_STATIC
+#endif // !GLEW_STATIC
+
 #include <iostream>
-#include <GLFW\glfw3.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 namespace sparky { namespace graphics {
 
