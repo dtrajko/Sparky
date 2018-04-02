@@ -17,13 +17,15 @@ int main()
 	mat4 position = mat4::translation(vec3(2, 3, 4));
 	position *= mat4::identity();
 
+	vec4 column = position.columns[2];
+	std::cout << "Column3: " << column << std::endl;
+
 	while (!window.closed())
 	{
 		window.clear();
 
 		double x, y;
 		window.getMousePosition(x, y);
-		// std::cout << "X = " << x << " | Y = " << y << std::endl;
 
 		if (window.isKeyPressed(GLFW_KEY_A))
 			std::cout << "KEY A PRESSED!" << std::endl;
