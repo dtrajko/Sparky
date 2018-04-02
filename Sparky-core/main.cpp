@@ -1,4 +1,5 @@
 #include "src/graphics/window.h"
+#include "src/graphics/shader.h"
 #include "src/maths/maths.h"
 
 int main()
@@ -14,11 +15,18 @@ int main()
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
+	Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");
+
+	/* BEGIN TESTING
 	mat4 position = mat4::translation(vec3(2, 3, 4));
 	position *= mat4::identity();
 
 	vec4 column = position.columns[2];
 	std::cout << "Column3: " << column << std::endl;
+
+	std::string file = read_file("main.cpp");
+	std::cout << file << std::endl;
+	END TESTING */
 
 	while (!window.closed())
 	{
