@@ -14,7 +14,7 @@ int main()
 
 	Window window("Sparky window", 1280, 720);
 
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 #if 0
 
@@ -53,17 +53,17 @@ int main()
 
 	GLfloat colorsA[] =
 	{
-		1, 0, 1, 1,
-		1, 0, 1, 1,
-		1, 0, 1, 1,
-		1, 0, 1, 1,
+		0.2f, 0.3f, 0.8f, 1,
+		1, 0, 0, 1,
+		0, 1, 0, 1,
+		0, 0, 1, 1,
 	};
 
 	GLfloat colorsB[] =
 	{
 		0.2f, 0.3f, 0.8f, 1,
 		0.2f, 0.3f, 0.8f, 1,
-		0.2f, 0.3f, 0.8f, 1,
+		1, 0, 1, 1,
 		0.2f, 0.3f, 0.8f, 1,
 	};
 
