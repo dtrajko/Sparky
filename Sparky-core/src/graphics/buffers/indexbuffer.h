@@ -8,15 +8,15 @@ namespace sparky { namespace graphics {
 	{
 	private:
 		GLuint m_BufferID;
-		GLuint m_ComponentCount;
+		GLuint m_Count;
 
 	public:
-		IndexBuffer(GLfloat* data, GLsizei count, GLuint componentCount);
+		IndexBuffer(GLushort* data, GLsizei count);
 
 		void bind() const;
 		void unbind() const;
 
-		inline GLuint getComponentCount() const { return m_ComponentCount; };
+		inline GLuint getCount() const { return m_Count; };
 	};
 
 } }
