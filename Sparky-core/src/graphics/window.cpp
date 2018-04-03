@@ -5,6 +5,9 @@ namespace sparky { namespace graphics {
 	void window_resize(GLFWwindow *window, int width, int height)
 	{
 		// glfwGetFramebufferSize(m_Window, &m_Width, &m_Height);
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
+		win->setWidth(width);
+		win->setHeight(height);
 		glViewport(0, 0, width, height);
 	}
 

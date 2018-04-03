@@ -43,6 +43,9 @@ namespace sparky { namespace graphics {
 			inline double getMouseX() const { return mx; }
 			inline double getMouseY() const { return my; }
 
+			inline void setWidth(int width) { m_Width = width; }
+			inline void setHeight(int height) { m_Height = height; }
+
 		private:
 			bool init();
 			friend static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
