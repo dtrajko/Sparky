@@ -7,8 +7,8 @@
 #include "src/graphics/buffers/vertexarray.h"
 
 #include "src/graphics/renderer2d.h"
-#include "src/graphics/renderable2d.h"
 #include "src/graphics/simple2drenderer.h"
+#include "src/graphics/static_sprite.h"
 
 int main()
 {
@@ -25,10 +25,10 @@ int main()
 	mat4 ortho = mat4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
 	shader.setUniformMat4("pr_matrix", ortho);
 
-	Renderable2D sprite1(maths::vec3(1, 1, 0), maths::vec2(8, 3), maths::vec4(0.5, 1, 1, 1), shader);
-	Renderable2D sprite2(maths::vec3(12, 1, 0), maths::vec2(3, 3), maths::vec4(1, 0.5, 1, 1), shader);
-	Renderable2D sprite3(maths::vec3(1, 5, 0), maths::vec2(6, 3), maths::vec4(0.5, 0.5, 1, 1), shader);
-	Renderable2D sprite4(maths::vec3(11, 6, 0), maths::vec2(4, 2), maths::vec4(1, 1, 0.5, 1), shader);
+	StaticSprite sprite1( 1, 1, 8, 3, maths::vec4(0.5, 1, 1, 1), shader);
+	StaticSprite sprite2(12, 1, 3, 3, maths::vec4(1, 0.5, 1, 1), shader);
+	StaticSprite sprite3( 1, 5, 6, 3, maths::vec4(0.5, 0.5, 1, 1), shader);
+	StaticSprite sprite4(11, 6, 4, 2, maths::vec4(1, 1, 0.5, 1), shader);
 
 	Simple2DRenderer renderer;
 
@@ -44,36 +44,34 @@ int main()
 
 		if (window.isKeyPressed(GLFW_KEY_A))
 		{
-			std::cout << "KEY A PRESSED!" << std::endl;
+			// std::cout << "KEY A PRESSED!" << std::endl;
 			light_x -= 1;
 		}
 		if (window.isKeyPressed(GLFW_KEY_D))
 		{
-			std::cout << "KEY D PRESSED!" << std::endl;
+			// std::cout << "KEY D PRESSED!" << std::endl;
 			light_x += 1;
 		} 
 		if (window.isKeyPressed(GLFW_KEY_W))
 		{
-			std::cout << "KEY W PRESSED!" << std::endl;
+			// std::cout << "KEY W PRESSED!" << std::endl;
 			light_y -= 1;
 		}
 		if (window.isKeyPressed(GLFW_KEY_S))
 		{
-			std::cout << "KEY S PRESSED!" << std::endl;
+			// std::cout << "KEY S PRESSED!" << std::endl;
 			light_y += 1;
 		}
 
-		if (window.isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
+		if (window.isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) || 
+			window.isMouseButtonPressed(GLFW_MOUSE_BUTTON_MIDDLE) ||
+			window.isMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
 		{
 			window.getMousePosition(x, y);
-			std::cout << "LEFT MOUSE BUTTON PRESSED [X=" << x << ", Y=" << y << "]" << std::endl;
+			// std::cout << "LEFT MOUSE BUTTON PRESSED [X=" << x << ", Y=" << y << "]" << std::endl;
 			light_x = x;
 			light_y = y;
 		}
-		if (window.isMouseButtonPressed(GLFW_MOUSE_BUTTON_MIDDLE))
-			std::cout << "MIDDLE MOUSE BUTTON PRESSED [X=" << x << ", Y=" << y << "]" << std::endl;
-		if (window.isMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
-			std::cout << "RIGHT MOUSE BUTTON PRESSED [X=" << x << ", Y=" << y << "]" << std::endl;
 
 		shader.setUniform2f("light_pos", vec2((float)(light_x * 16.0f / window.getWidth() - 0.0f), (float)((9.0f - light_y * 9.0f / window.getHeight()) - 0.0f)));
 

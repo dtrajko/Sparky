@@ -2,7 +2,7 @@
 
 namespace sparky { namespace graphics {
 
-	void Simple2DRenderer::submit(const Renderable2D* renderable)
+	void Simple2DRenderer::submit(const StaticSprite* renderable)
 	{
 		m_RenderQueue.push_back(renderable);
 	}
@@ -10,16 +10,16 @@ namespace sparky { namespace graphics {
 	{
 		while (!m_RenderQueue.empty())
 		{
-			const Renderable2D* renderable = m_RenderQueue.front();
+			const StaticSprite* sprite = m_RenderQueue.front();
 
-			const VertexArray* vao = renderable->getVAO();
-			const IndexBuffer* ibo = renderable->getIBO();
-			Shader shader = renderable->getShader();
+			const VertexArray* vao = sprite->getVAO();
+			const IndexBuffer* ibo = sprite->getIBO();
+			Shader shader = sprite->getShader();
 
 			vao->bind();
 			ibo->bind();
 
-			shader.setUniformMat4("ml_matrix", maths::mat4::translation(renderable->getPosition()));
+			shader.setUniformMat4("ml_matrix", maths::mat4::translation(sprite->getPosition()));
 			glDrawElements(GL_TRIANGLES, ibo->getCount(), GL_UNSIGNED_SHORT, nullptr);
 
 			ibo->unbind();
