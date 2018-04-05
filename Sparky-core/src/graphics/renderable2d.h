@@ -22,11 +22,9 @@ namespace sparky { namespace graphics {
 		maths::vec4 m_Color;
 
 	public:
-		Renderable2D(maths::vec3 position, maths::vec2 size, maths::vec4 color)
+		Renderable2D(maths::vec3 position, maths::vec2 size, const maths::vec4& color)
 			: m_Position(position), m_Size(size), m_Color(color)
-		{
-
-		};
+		{ };
 
 		virtual ~Renderable2D() { };
 

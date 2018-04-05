@@ -2,9 +2,9 @@
 
 namespace sparky { namespace graphics {
 
-	void Simple2DRenderer::submit(const StaticSprite* renderable)
+	void Simple2DRenderer::submit(const Renderable2D* renderable)
 	{
-		m_RenderQueue.push_back(renderable);
+		m_RenderQueue.push_back((StaticSprite*) renderable);
 	}
 	void Simple2DRenderer::flush()
 	{

@@ -11,7 +11,7 @@ namespace sparky { namespace graphics {
 		IndexBuffer* m_IndexBuffer;
 		Shader& m_Shader;
 	public:
-		StaticSprite(float x, float y, float width, float height, const maths::vec4 color, Shader& shader);
+		StaticSprite(float x, float y, float width, float height, const maths::vec4& color, Shader& shader);
 		~StaticSprite();
 
 		inline const VertexArray* getVAO() const { return m_VertexArray; };

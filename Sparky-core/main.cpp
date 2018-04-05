@@ -7,8 +7,10 @@
 #include "src/graphics/buffers/vertexarray.h"
 
 #include "src/graphics/renderer2d.h"
-#include "src/graphics/simple2drenderer.h"
 #include "src/graphics/static_sprite.h"
+
+#include "src/graphics/simple2drenderer.h"
+#include "src/graphics/BatchRenderer2D.h"
 
 int main()
 {
@@ -45,22 +47,22 @@ int main()
 		if (window.isKeyPressed(GLFW_KEY_A))
 		{
 			// std::cout << "KEY A PRESSED!" << std::endl;
-			light_x -= 1;
+			light_x -= 0.5f;
 		}
 		if (window.isKeyPressed(GLFW_KEY_D))
 		{
 			// std::cout << "KEY D PRESSED!" << std::endl;
-			light_x += 1;
+			light_x += 0.5f;
 		} 
 		if (window.isKeyPressed(GLFW_KEY_W))
 		{
 			// std::cout << "KEY W PRESSED!" << std::endl;
-			light_y -= 1;
+			light_y -= 0.5f;
 		}
 		if (window.isKeyPressed(GLFW_KEY_S))
 		{
 			// std::cout << "KEY S PRESSED!" << std::endl;
-			light_y += 1;
+			light_y += 0.5f;
 		}
 
 		if (window.isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) || 

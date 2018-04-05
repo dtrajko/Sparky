@@ -2,7 +2,7 @@
 
 namespace sparky { namespace graphics {
 
-	StaticSprite::StaticSprite(float x, float y, float width, float height, const maths::vec4 color, Shader& shader)
+	StaticSprite::StaticSprite(float x, float y, float width, float height, const maths::vec4& color, Shader& shader)
 		: Renderable2D(maths::vec3(x, y, 0), maths::vec2(width, height), color), m_Shader(shader)
 	{
 		m_VertexArray = new VertexArray();
@@ -27,7 +27,6 @@ namespace sparky { namespace graphics {
 
 		GLushort indices[] = { 0, 1, 2, 2, 3, 0 };
 		m_IndexBuffer = new IndexBuffer(indices, 6);
-
 	}
 
 	StaticSprite::~StaticSprite()

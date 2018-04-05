@@ -22,13 +22,16 @@ namespace sparky { namespace graphics {
 		GLuint m_VBO;
 		IndexBuffer* m_IBO; // 60000
 		GLsizei m_IndexCount;
+		VertexData* m_Buffer;
 
 	public:
 		BatchRenderer2D();
 		~BatchRenderer2D();
 
-		void submit(const StaticSprite* renderable) override;
+		void begin();
+		void submit(const Renderable2D* renderable) override;
 		void flush() override;
+		void end();
 
 	private:
 		void init();
