@@ -10,7 +10,7 @@
 #include "src/graphics/static_sprite.h"
 
 #include "src/graphics/simple2drenderer.h"
-#include "src/graphics/BatchRenderer2D.h"
+#include "src/graphics/batchrenderer2d.h"
 
 int main()
 {
