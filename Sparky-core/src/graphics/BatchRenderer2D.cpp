@@ -32,7 +32,7 @@ namespace sparky { namespace graphics {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		// indices
-		GLushort indices[RENDERER_INDICES_SIZE];
+		GLuint* indices = new GLuint[RENDERER_INDICES_SIZE];
 		int offset = 0;
 		for (int i = 0; i < RENDERER_INDICES_SIZE; i += 6)
 		{
@@ -51,7 +51,6 @@ namespace sparky { namespace graphics {
 
 		glBindVertexArray(0);
 	}
-
 
 	void BatchRenderer2D::submit(const Renderable2D* renderable)
 	{
@@ -96,7 +95,7 @@ namespace sparky { namespace graphics {
 		glBindVertexArray(m_VAO);
 		m_IBO->bind();
 
-		glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_SHORT, nullptr);
+		glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, nullptr);
 
 		m_IBO->unbind();
 		glBindVertexArray(0);

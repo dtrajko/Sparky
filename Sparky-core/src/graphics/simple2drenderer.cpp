@@ -20,7 +20,7 @@ namespace sparky { namespace graphics {
 			ibo->bind();
 
 			shader.setUniformMat4("ml_matrix", maths::mat4::translation(sprite->getPosition()));
-			glDrawElements(GL_TRIANGLES, ibo->getCount(), GL_UNSIGNED_SHORT, nullptr);
+			glDrawElements(GL_TRIANGLES, ibo->getCount(), GL_UNSIGNED_INT, nullptr);
 
 			ibo->unbind();
 			vao->unbind();

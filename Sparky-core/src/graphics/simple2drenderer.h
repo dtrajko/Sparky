@@ -12,8 +12,10 @@ namespace sparky { namespace graphics {
 		std::deque<const StaticSprite*> m_RenderQueue;
 
 	public:
+		inline void begin() {};
 		void submit(const Renderable2D* renderable) override;
 		void flush() override;
+		inline void end() {};
 
 	};
 

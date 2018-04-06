@@ -25,7 +25,7 @@ namespace sparky { namespace graphics {
 		m_VertexArray->addBuffer(vertexBuffer, 0);
 		m_VertexArray->addBuffer(colorBuffer, 1);
 
-		GLushort indices[] = { 0, 1, 2, 2, 3, 0 };
+		GLuint indices[] = { 0, 1, 2, 2, 3, 0 };
 		m_IndexBuffer = new IndexBuffer(indices, 6);
 	}
 
