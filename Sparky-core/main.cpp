@@ -1,20 +1,17 @@
+#include <vector>
+#include <time.h>
 #include "src/graphics/window.h"
 #include "src/graphics/shader.h"
 #include "src/maths/maths.h"
-
 #include "src/graphics/buffers/buffer.h"
 #include "src/graphics/buffers/indexbuffer.h"
 #include "src/graphics/buffers/vertexarray.h"
-
 #include "src/graphics/static_sprite.h"
 #include "src/graphics/sprite.h"
-
 #include "src/graphics/renderer2d.h"
 #include "src/graphics/simple2drenderer.h"
 #include "src/graphics/batchrenderer2d.h"
-
-#include <vector>
-#include <time.h>
+#include "src/utils/timer.h"
 
 #define BATCH_RENDERER 1
 
@@ -37,34 +34,32 @@ int main()
 
 	srand((unsigned int)time(NULL));
 
-	for (float y = 0; y < 9.0f; y += 0.06f)
+	for (float y = 0; y < 9.0f; y += 0.05f)
 	{
-		for (float x = 0; x < 16.0f; x += 0.06f)
+		for (float x = 0; x < 16.0f; x += 0.05f)
 		{
 			#if BATCH_RENDERER
-			sprites.push_back(new Sprite(x, y, 0.05f, 0.05f, maths::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1, 1)));
+			sprites.push_back(new Sprite(x, y, 0.04f, 0.04f, maths::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1, 1)));
 			#else
-			sprites.push_back(new StaticSprite(x, y, 0.05f, 0.05f, maths::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1, 1), shader));
+			sprites.push_back(new StaticSprite(x, y, 0.04f, 0.04f, maths::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1, 1), shader));
 			#endif
 		}
 	}
 
-	std::cout << "Number of sprites: " << sprites.size() << std::endl;
-
 	#if BATCH_RENDERER
 
-	Sprite sprite1( 1, 1, 8, 3, maths::vec4(0.5,   1,   1, 1));
-	Sprite sprite2(12, 1, 3, 3, maths::vec4(  1, 0.5,   1, 1));
-	Sprite sprite3( 1, 5, 6, 3, maths::vec4(0.5, 0.5,   1, 1));
-	Sprite sprite4(11, 6, 4, 2, maths::vec4(  1,   1, 0.5, 1));
+	// Sprite sprite1( 1, 1, 8, 3, maths::vec4(0.5,   1,   1, 1));
+	// Sprite sprite2(12, 1, 3, 3, maths::vec4(  1, 0.5,   1, 1));
+	// Sprite sprite3( 1, 5, 6, 3, maths::vec4(0.5, 0.5,   1, 1));
+	// Sprite sprite4(11, 6, 4, 2, maths::vec4(  1,   1, 0.5, 1));
 	BatchRenderer2D renderer;
 
 	#else
 
-	StaticSprite sprite1( 1, 1, 8, 3, maths::vec4(0.5,   1,   1, 1), shader);
-	StaticSprite sprite2(12, 1, 3, 3, maths::vec4(  1, 0.5,   1, 1), shader);
-	StaticSprite sprite3( 1, 5, 6, 3, maths::vec4(0.5, 0.5,   1, 1), shader);
-	StaticSprite sprite4(11, 6, 4, 2, maths::vec4(  1,   1, 0.5, 1), shader);
+	// StaticSprite sprite1( 1, 1, 8, 3, maths::vec4(0.5,   1,   1, 1), shader);
+	// StaticSprite sprite2(12, 1, 3, 3, maths::vec4(  1, 0.5,   1, 1), shader);
+	// StaticSprite sprite3( 1, 5, 6, 3, maths::vec4(0.5, 0.5,   1, 1), shader);
+	// StaticSprite sprite4(11, 6, 4, 2, maths::vec4(  1,   1, 0.5, 1), shader);
 	Simple2DRenderer renderer;
 
 	#endif
@@ -77,9 +72,18 @@ int main()
 
 	#define LIGHT_SPEED 20;
 
+	Timer time;
+	float timer = 0;
+	unsigned int frames = 0;
+
 	while (!window.closed())
 	{
 		window.clear();
+
+		mat4 mat = mat4::translation(vec3(8, 4.5, 0));
+		mat = mat * mat4::rotation(time.elapsed() * 50, vec3(0, 0, 1));
+		mat = mat * mat4::translation(vec3(-8, -4.5, -0));
+		shader.setUniformMat4("ml_matrix", mat);
 
 		if (window.isKeyPressed(GLFW_KEY_A))
 			light_x -= 0.5f * LIGHT_SPEED;
@@ -112,6 +116,14 @@ int main()
 		renderer.flush();
 
 		window.update();
+
+		frames++;
+		if (time.elapsed() - timer > 1.0f)
+		{
+			timer += 1.0f;
+			std::cout << "Timer: " << timer << " | Sprites: " << sprites.size() << " | FPS: " << frames << std::endl;
+			frames = 0;
+		}
 	}
 
 	return 0;

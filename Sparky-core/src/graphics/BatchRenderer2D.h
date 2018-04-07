@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <GL/glew.h>
 #include "renderer2d.h"
 #include "buffers/indexbuffer.h"
