@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <GL/glew.h>
 #include "renderer2d.h"
+#include "renderable2d.h"
 #include "buffers/indexbuffer.h"
 
 namespace sparky { namespace graphics {
@@ -29,10 +30,10 @@ namespace sparky { namespace graphics {
 		BatchRenderer2D();
 		~BatchRenderer2D();
 
-		void begin();
+		void begin() override;
 		void submit(const Renderable2D* renderable) override;
 		void flush() override;
-		void end();
+		void end() override;
 
 	private:
 		void init();

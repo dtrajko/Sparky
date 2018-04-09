@@ -5,13 +5,13 @@
 #include "buffers/vertexarray.h"
 #include "shader.h"
 #include "../maths/maths.h"
+#include "renderer2d.h"
 
 namespace sparky { namespace graphics {
 
 	struct VertexData
 	{
 		maths::vec3 vertex;
-		// maths::vec4 color;
 		unsigned int color;
 	};
 
@@ -23,16 +23,21 @@ namespace sparky { namespace graphics {
 		maths::vec4 m_Color;
 
 	public:
+		Renderable2D() {};
 		Renderable2D(maths::vec3 position, maths::vec2 size, const maths::vec4& color)
 			: m_Position(position), m_Size(size), m_Color(color)
 		{ };
 
-		virtual ~Renderable2D() { };
+		virtual ~Renderable2D() {};
+
+		virtual void submit(Renderer2D* renderer) const
+		{
+			renderer->submit(this);
+		};
 
 		inline const maths::vec3& getPosition() const { return m_Position; };
 		inline const maths::vec2& getSize() const { return m_Size; };
 		inline const maths::vec4& getColor() const { return m_Color; };
 	};
-
 
 } }

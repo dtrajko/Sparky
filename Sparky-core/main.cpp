@@ -12,8 +12,8 @@
 #include "src/graphics/simple2drenderer.h"
 #include "src/graphics/batchrenderer2d.h"
 #include "src/utils/timer.h"
-
-#define BATCH_RENDERER 1
+#include "src/graphics/layers/tilelayer.h"
+#include "src/graphics/layers/group.h"
 
 int main()
 {
@@ -21,57 +21,48 @@ int main()
 	using namespace graphics;
 	using namespace maths;
 
-	Window window("Sparky window", 1280, 720);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	Window window("Sparky window", 960, 540);
 
 	mat4 ortho = mat4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
 
-	Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");
-	shader.enable();
-	shader.setUniformMat4("pr_matrix", ortho);
+	Shader* shader = new Shader("src/shaders/basic.vert", "src/shaders/basic.frag");
+	Shader* shader2 = new Shader("src/shaders/basic.vert", "src/shaders/basic.frag");
+	shader->enable();
+	shader2->enable();
+	shader->setUniform2f("light_pos", vec2(4.0f, 1.5f));
+	shader2->setUniform2f("light_pos", vec2(4.0f, 1.5f));
 
-	std::vector<Renderable2D*> sprites;
+	TileLayer layer(shader);
+	TileLayer layer2(shader2);
 
-	srand((unsigned int)time(NULL));
-
-	for (float y = 0; y < 9.0f; y += 0.05f)
+	/*
+	int sprites = 0;
+	for (float y = -9.0; y < 9.0f; y += 0.2f)
 	{
-		for (float x = 0; x < 16.0f; x += 0.05f)
+		for (float x = -16.0; x < 16.0f; x += 0.2f)
 		{
-			#if BATCH_RENDERER
-			sprites.push_back(new Sprite(x, y, 0.04f, 0.04f, maths::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1, 1)));
-			#else
-			sprites.push_back(new StaticSprite(x, y, 0.04f, 0.04f, maths::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1, 1), shader));
-			#endif
+			layer.add(new Sprite(x, y, 0.18f, 0.18f, maths::vec4(rand() % 1000 / 1000.0f, 0, 1, 1)));
+			sprites++;
 		}
 	}
+	*/
 
-	#if BATCH_RENDERER
+	mat4 transform = mat4::translation(vec3(-12.0f, 1.0f, 0.0f)) * mat4::rotation(45, vec3(0, 0, 1));
+	Group* group = new Group(transform);
+	group->add(new Sprite(0.0f, 0.0f, 6, 3, maths::vec4(1, 1, 1, 1)));
 
-	// Sprite sprite1( 1, 1, 8, 3, maths::vec4(0.5,   1,   1, 1));
-	// Sprite sprite2(12, 1, 3, 3, maths::vec4(  1, 0.5,   1, 1));
-	// Sprite sprite3( 1, 5, 6, 3, maths::vec4(0.5, 0.5,   1, 1));
-	// Sprite sprite4(11, 6, 4, 2, maths::vec4(  1,   1, 0.5, 1));
-	BatchRenderer2D renderer;
+	Group* button = new Group(mat4::translation(vec3(0.5f, 0.5f, 0.0f)));
+	button->add(new Sprite(0, 0, 5, 2, maths::vec4(1, 0, 1, 1)));
+	button->add(new Sprite(0.5f, 0.5f, 4, 1, maths::vec4(0.2f, 0.3f, 0.8f, 1)));
+	group->add(button);
+	layer.add(group);
 
-	#else
+	layer.add(new Sprite(-6.0f, -3.0f, 2, 8, maths::vec4(1, 1, 0, 1)));
+	layer.add(new Sprite(-3.0f, -3.0f, 8, 8, maths::vec4(0.2f, 0.2f, 0.8f, 1)));
 
-	// StaticSprite sprite1( 1, 1, 8, 3, maths::vec4(0.5,   1,   1, 1), shader);
-	// StaticSprite sprite2(12, 1, 3, 3, maths::vec4(  1, 0.5,   1, 1), shader);
-	// StaticSprite sprite3( 1, 5, 6, 3, maths::vec4(0.5, 0.5,   1, 1), shader);
-	// StaticSprite sprite4(11, 6, 4, 2, maths::vec4(  1,   1, 0.5, 1), shader);
-	Simple2DRenderer renderer;
-
-	#endif
+	layer2.add(new Sprite(-2, -2, 4, 4, maths::vec4(1, 0, 1, 1)));
 
 	double x, y;
-	double light_x, light_y;
-
-	light_x = 8;
-	light_y = 4.5;
-
-	#define LIGHT_SPEED 20;
-
 	Timer time;
 	float timer = 0;
 	unsigned int frames = 0;
@@ -79,41 +70,14 @@ int main()
 	while (!window.closed())
 	{
 		window.clear();
+		window.getMousePosition(x, y);
+		shader->enable();
+		shader->setUniform2f("light_pos", vec2((float)(x * 32.0f / window.getWidth() - 16.0f), (float)(9.0f - y * 18.0f / window.getHeight())));
+		shader2->enable();
+		shader2->setUniform2f("light_pos", vec2((float)-(x * 32.0f / window.getWidth() - 16.0f), (float)-(9.0f - y * 18.0f / window.getHeight())));
 
-		mat4 mat = mat4::translation(vec3(8, 4.5, 0));
-		mat = mat * mat4::rotation(time.elapsed() * 50, vec3(0, 0, 1));
-		mat = mat * mat4::translation(vec3(-8, -4.5, -0));
-		shader.setUniformMat4("ml_matrix", mat);
-
-		if (window.isKeyPressed(GLFW_KEY_A))
-			light_x -= 0.5f * LIGHT_SPEED;
-		if (window.isKeyPressed(GLFW_KEY_D))
-			light_x += 0.5f * LIGHT_SPEED;
-		if (window.isKeyPressed(GLFW_KEY_W))
-			light_y -= 0.5f * LIGHT_SPEED;
-		if (window.isKeyPressed(GLFW_KEY_S))
-			light_y += 0.5f * LIGHT_SPEED;
-
-		if (window.isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT) || 
-			window.isMouseButtonPressed(GLFW_MOUSE_BUTTON_MIDDLE) ||
-			window.isMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
-		{
-			window.getMousePosition(x, y);
-			light_x = x;
-			light_y = y;
-		}
-
-		shader.setUniform2f("light_pos", vec2((float)(light_x * 16.0f / window.getWidth() - 0.0f), (float)((9.0f - light_y * 9.0f / window.getHeight()) - 0.0f)));
-
-		renderer.begin();
-
-		for (unsigned int i = 0; i < sprites.size(); i++)
-		{
-			renderer.submit(sprites[i]);
-		}
-
-		renderer.end();
-		renderer.flush();
+		layer.render();
+		layer2.render();
 
 		window.update();
 
@@ -121,10 +85,13 @@ int main()
 		if (time.elapsed() - timer > 1.0f)
 		{
 			timer += 1.0f;
-			std::cout << "Timer: " << timer << " | Sprites: " << sprites.size() << " | FPS: " << frames << std::endl;
+			std::cout << "Timer: " << timer << " | Sprites: " << "n/a" << " | FPS: " << frames << std::endl;
 			frames = 0;
 		}
 	}
+
+	delete shader;
+	delete shader2;
 
 	return 0;
 }

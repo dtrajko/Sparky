@@ -6,6 +6,7 @@ namespace sparky { namespace graphics {
 	{
 		m_RenderQueue.push_back((StaticSprite*) renderable);
 	}
+
 	void Simple2DRenderer::flush()
 	{
 		while (!m_RenderQueue.empty())
