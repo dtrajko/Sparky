@@ -14,6 +14,7 @@
 #include "src/utils/timer.h"
 #include "src/graphics/layers/tilelayer.h"
 #include "src/graphics/layers/group.h"
+#include "src/graphics/texture.h"
 
 int main()
 {
@@ -62,6 +63,10 @@ int main()
 
 	layer2.add(new Sprite(-2, -2, 4, 4, maths::vec4(1, 0, 1, 1)));
 
+	Texture texture("test.png");
+	Simple2DRenderer simple;
+	Sprite* testTexture = new Sprite(0, 0, 4, 4, maths::vec4(1, 1, 1, 1));
+
 	double x, y;
 	Timer time;
 	float timer = 0;
@@ -78,6 +83,9 @@ int main()
 
 		layer.render();
 		layer2.render();
+
+		simple.submit(testTexture);
+		// simple.flush();
 
 		window.update();
 
