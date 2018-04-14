@@ -40,6 +40,9 @@ namespace sparky { namespace graphics {
 		const char* vertSource = vertSourceString.c_str();
 		const char* fragSource = fragSourceString.c_str();
 
+		// std::cout << "Fragment shader: " << std::endl;
+		// std::cout << fragSource << std::endl;
+
 		glShaderSource(vertex, 1, &vertSource, NULL);
 		glCompileShader(vertex);
 

@@ -24,10 +24,12 @@ namespace sparky { namespace graphics {
 		glBufferData(GL_ARRAY_BUFFER, RENDERER_BUFFER_SIZE, NULL, GL_DYNAMIC_DRAW);
 
 		glEnableVertexAttribArray(SHADER_VERTEX_INDEX);
+		glEnableVertexAttribArray(SHADER_UV_INDEX);
 		glEnableVertexAttribArray(SHADER_COLOR_INDEX);
 
 		glVertexAttribPointer(SHADER_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*) 0);
-		glVertexAttribPointer(SHADER_COLOR_INDEX, 4, GL_UNSIGNED_BYTE, GL_TRUE, RENDERER_VERTEX_SIZE, (const GLvoid*)offsetof(VertexData, VertexData::color));
+		glVertexAttribPointer(SHADER_UV_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const GLvoid*) offsetof(VertexData, VertexData::uv));
+		glVertexAttribPointer(SHADER_COLOR_INDEX, 4, GL_UNSIGNED_BYTE, GL_TRUE, RENDERER_VERTEX_SIZE, (const GLvoid*) offsetof(VertexData, VertexData::color));
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -53,10 +55,11 @@ namespace sparky { namespace graphics {
 	}
 
 	void BatchRenderer2D::submit(const Renderable2D* renderable)
-	{
+	  {
 		const maths::vec3& position = renderable->getPosition();
 		const maths::vec2& size = renderable->getSize();
 		const maths::vec4& color = renderable->getColor();
+		const std::vector<maths::vec2>& uv = renderable->getUV();
 
 		int r = (int) (color.x * 255.0f);
 		int g = (int) (color.y * 255.0f);
@@ -66,18 +69,22 @@ namespace sparky { namespace graphics {
 		unsigned int c = a << 24 | b << 16 | g << 8 | r;
 
 		m_Buffer->vertex = *m_TransformationBack * position;
+		m_Buffer->uv = uv[0];
 		m_Buffer->color = c;
 		m_Buffer++;
 
 		m_Buffer->vertex = *m_TransformationBack * maths::vec3(position.x, position.y + size.y, position.z);
+		m_Buffer->uv = uv[1];
 		m_Buffer->color = c;
 		m_Buffer++;
 
 		m_Buffer->vertex = *m_TransformationBack * maths::vec3(position.x + size.x, position.y + size.y, position.z);
+		m_Buffer->uv = uv[2];
 		m_Buffer->color = c;
 		m_Buffer++;
 
 		m_Buffer->vertex = *m_TransformationBack * maths::vec3(position.x + size.x, position.y, position.z);
+		m_Buffer->uv = uv[3];
 		m_Buffer->color = c;
 		m_Buffer++;
 
