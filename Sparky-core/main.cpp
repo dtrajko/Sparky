@@ -32,22 +32,24 @@ int main()
 
 	TileLayer layer(shader);
 
+
 	int sprites = 0;
-	for (float y = -9.0; y < 9.0f; y += 1.0f)
+	for (float y = -9.0; y < 9.0f; y += 2.0f)
 	{
-		for (float x = -16.0; x < 16.0f; x += 1.0f)
+		for (float x = -16.0; x < 16.0f; x += 2.0f)
 		{
-			layer.add(new Sprite(x, y, 0.9f, 0.9f, maths::vec4(rand() % 1000 / 1000.0f, 0, 1, 1)));
+			layer.add(new Sprite(x, y, 1.9f, 1.9f, maths::vec4(rand() % 1000 / 1000.0f, 1, 1, 1)));
 			sprites++;
 		}
 	}
 
+	Texture texture("test.png");
+	glActiveTexture(GL_TEXTURE0);
+	texture.bind();
+
 	shader->enable();
 	shader->setUniform1i("tex", 0);
 	shader->setUniformMat4("pr_matrix", mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
-
-	Texture texture("test.png");
-	texture.bind();
 
 	double x, y;
 	Timer time;
