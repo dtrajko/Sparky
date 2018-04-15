@@ -4,8 +4,9 @@
 #include "buffers/indexbuffer.h"
 #include "buffers/vertexarray.h"
 #include "shader.h"
-#include "../maths/maths.h"
 #include "renderer2d.h"
+#include "../maths/maths.h"
+#include "../graphics/texture.h"
 
 namespace sparky { namespace graphics {
 
@@ -13,7 +14,7 @@ namespace sparky { namespace graphics {
 	{
 		maths::vec3 vertex;
 		maths::vec2 uv;
-		// unsigned int tid;
+		float tid;
 		unsigned int color;
 	};
 
@@ -24,6 +25,7 @@ namespace sparky { namespace graphics {
 		maths::vec2 m_Size;
 		maths::vec4 m_Color;
 		std::vector<maths::vec2> m_UV;
+		Texture* m_Texture;
 
 	public:
 		Renderable2D()
@@ -48,6 +50,7 @@ namespace sparky { namespace graphics {
 		inline const maths::vec2& getSize() const { return m_Size; };
 		inline const maths::vec4& getColor() const { return m_Color; };
 		inline const std::vector<maths::vec2>& getUV() const { return m_UV; };
+		inline const GLuint getTID() const { return m_Texture == nullptr ? 0 : m_Texture->getID(); };
 
 	private:
 		void setUVDefaults()

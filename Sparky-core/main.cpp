@@ -1,8 +1,10 @@
 #include <vector>
 #include <time.h>
+
+#include "src/maths/maths.h"
+#include "src/utils/timer.h"
 #include "src/graphics/window.h"
 #include "src/graphics/shader.h"
-#include "src/maths/maths.h"
 #include "src/graphics/buffers/buffer.h"
 #include "src/graphics/buffers/indexbuffer.h"
 #include "src/graphics/buffers/vertexarray.h"
@@ -11,7 +13,6 @@
 #include "src/graphics/renderer2d.h"
 #include "src/graphics/simple2drenderer.h"
 #include "src/graphics/batchrenderer2d.h"
-#include "src/utils/timer.h"
 #include "src/graphics/layers/tilelayer.h"
 #include "src/graphics/layers/group.h"
 #include "src/graphics/texture.h"
@@ -22,7 +23,7 @@ int main()
 	using namespace graphics;
 	using namespace maths;
 
-	Window window("Sparky window", 960, 540);
+	Window window("Sparky window", 1280, 720);
 
 	mat4 ortho = mat4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
 
@@ -32,23 +33,31 @@ int main()
 
 	TileLayer layer(shader);
 
+	Texture* textures[] =
+	{
+		new Texture("res/wall.png"),
+		new Texture("res/grass.png"),
+		new Texture("res/rock.png"),
+	};
 
 	int sprites = 0;
-	for (float y = -9.0; y < 9.0f; y += 2.0f)
+	float squareSize = 1.0f;
+	for (float y = -9.0f; y < 9.0f; y += squareSize)
 	{
-		for (float x = -16.0; x < 16.0f; x += 2.0f)
+		for (float x = -16.0f; x < 16.0f; x += squareSize)
 		{
-			layer.add(new Sprite(x, y, 1.9f, 1.9f, maths::vec4(rand() % 1000 / 1000.0f, 1, 1, 1)));
+			if (sprites % 2 == 0)
+				layer.add(new Sprite(x, y, squareSize - 0.1f, squareSize - 0.1f, textures[rand() % 3]));
+			else
+				layer.add(new Sprite(x, y, squareSize - 0.1f, squareSize - 0.1f, textures[rand() % 3]));
+				// layer.add(new Sprite(x, y, squareSize - 0.1f, squareSize - 0.1f, vec4(0.2f, 0.3f, 0.8f, 1)));
 			sprites++;
 		}
 	}
 
-	Texture texture("test.png");
-	glActiveTexture(GL_TEXTURE0);
-	texture.bind();
-
+	GLint texIds[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	shader->enable();
-	shader->setUniform1i("tex", 0);
+	shader->setUniform1iv("textures", texIds, 10);
 	shader->setUniformMat4("pr_matrix", mat4::orthographic(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
 
 	double x, y;
@@ -69,12 +78,16 @@ int main()
 		if (time.elapsed() - timer > 1.0f)
 		{
 			timer += 1.0f;
-			std::cout << "Timer: " << timer << " | Sprites: " << sprites << " | FPS: " << frames << std::endl;
+			// std::cout << "Timer: " << timer << " | Sprites: " << sprites << " | FPS: " << frames << std::endl;
 			frames = 0;
 		}
 	}
 
 	delete shader;
+	for (int i = 0; i < 3; i++)
+	{
+		delete textures[i];
+	}
 
 	return 0;
 }
