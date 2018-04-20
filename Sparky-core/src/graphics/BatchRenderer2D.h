@@ -25,7 +25,7 @@ namespace sparky { namespace graphics {
 		GLuint m_VAO;
 		GLuint m_VBO;
 		IndexBuffer* m_IBO; // 60000
-		GLsizei m_IndexCount = 0;
+		GLsizei m_IndexCount;
 		VertexData* m_Buffer;
 		std::vector<GLuint> m_TextureSlots;
 

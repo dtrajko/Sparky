@@ -99,17 +99,18 @@ namespace sparky { namespace graphics {
 		glUniform1f(getUniformLocation(name), value);
 	}
 
+
 	void Shader::setUniform1i(const GLchar* name, int value)
 	{
 		glUniform1i(getUniformLocation(name), value);
 	}
 
-	void Shader::setUniform1fv(const GLchar * name, GLfloat* value, GLint count)
+	void Shader::setUniform1fv(const GLchar * name, float* value, int count)
 	{
 		glUniform1fv(getUniformLocation(name), count, value);
 	}
 
-	void Shader::setUniform1iv(const GLchar* name, GLint* value, GLint count)
+	void Shader::setUniform1iv(const GLchar* name, int* value, int count)
 	{
 		glUniform1iv(getUniformLocation(name), count, value);
 	}

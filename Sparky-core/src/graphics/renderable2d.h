@@ -14,8 +14,8 @@ namespace sparky { namespace graphics {
 	{
 		maths::vec3 vertex;
 		maths::vec2 uv;
-		GLint texSlot;
-		GLuint color;
+		float tid;
+		unsigned int color;
 	};
 
 	class Renderable2D
@@ -55,10 +55,10 @@ namespace sparky { namespace graphics {
 	private:
 		void setUVDefaults()
 		{
-			m_UV.push_back(maths::vec2(0.0f, 0.0f));
-			m_UV.push_back(maths::vec2(0.0f, 1.0f));
-			m_UV.push_back(maths::vec2(1.0f, 1.0f));
-			m_UV.push_back(maths::vec2(1.0f, 0.0f));
+			m_UV.push_back(maths::vec2(0, 0));
+			m_UV.push_back(maths::vec2(0, 1));
+			m_UV.push_back(maths::vec2(1, 1));
+			m_UV.push_back(maths::vec2(1, 0));
 		}
 	};
 
