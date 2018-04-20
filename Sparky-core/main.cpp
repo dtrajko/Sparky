@@ -23,7 +23,7 @@ int main()
 	using namespace graphics;
 	using namespace maths;
 
-	Window window("Sparky window", 1280, 720);
+	Window window("OpenGL / C++", 1280, 720);
 
 	mat4 ortho = mat4::orthographic(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f);
 
@@ -33,6 +33,7 @@ int main()
 
 	TileLayer layer(shader);
 
+	GLuint numTextures = 3;
 	Texture* textures[] =
 	{
 		new Texture("res/wall.png"),
@@ -40,20 +41,28 @@ int main()
 		new Texture("res/rock.png"),
 	};
 
-	int sprites = 0;
-	float squareSize = 1.0f;
-	for (float y = -9.0f; y < 9.0f; y += squareSize)
+	GLuint sprites = 0;
+
+	GLfloat squareSize = 2.0f;
+	for (GLfloat y = -9.0f; y < 9.0f; y += squareSize)
 	{
-		for (float x = -16.0f; x < 16.0f; x += squareSize)
+		for (GLfloat x = -16.0f; x < 16.0f; x += squareSize)
 		{
 			if (sprites % 2 == 0)
-				layer.add(new Sprite(x, y, squareSize - 0.1f, squareSize - 0.1f, textures[rand() % 3]));
+				layer.add(new Sprite(x, y, squareSize - 0.1f, squareSize - 0.1f, textures[rand() % numTextures]));
 			else
-				layer.add(new Sprite(x, y, squareSize - 0.1f, squareSize - 0.1f, textures[rand() % 3]));
-				// layer.add(new Sprite(x, y, squareSize - 0.1f, squareSize - 0.1f, vec4(0.2f, 0.3f, 0.8f, 1)));
+				layer.add(new Sprite(x, y, squareSize - 0.1f, squareSize - 0.1f, vec4(0.2f, 0.3f, 0.8f, 1)));
 			sprites++;
 		}
 	}
+
+	/*
+	GLfloat sx = 0.0f;
+	GLfloat sy = -2.0f;
+	layer.add(new Sprite(sx - 6, sy, 5.0f, 5.0f, textures[0]));
+	layer.add(new Sprite(sx, sy, 5.0f, 5.0f, textures[1]));
+	layer.add(new Sprite(sx + 6, sy, 5.0f, 5.0f, textures[2]));
+	*/
 
 	GLint texIds[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	shader->enable();
@@ -84,7 +93,7 @@ int main()
 	}
 
 	delete shader;
-	for (int i = 0; i < 3; i++)
+	for (GLuint i = 0; i < numTextures; i++)
 	{
 		delete textures[i];
 	}
